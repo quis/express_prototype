@@ -15,7 +15,7 @@ module.exports = function(grunt){
             'govuk_modules/govuk_frontend_toolkit/stylesheets'
           ],
           outputStyle: 'expanded'
-        } 
+        }
       }
     },
 
@@ -43,7 +43,7 @@ module.exports = function(grunt){
       fixSass: {
         src: ['govuk_modules/govuk_template/**/*.scss', 'govuk_modules/govuk_frontend_toolkit/**/*.scss'],
         overwrite: true,
-        replacements: [{ 
+        replacements: [{
           from: /filter:chroma(.*);/g,
           to: 'filter:unquote("chroma$1");'
         }]
@@ -91,7 +91,7 @@ module.exports = function(grunt){
   ].forEach(function (task) {
     grunt.loadNpmTasks(task);
   });
-  
+
   grunt.registerTask(
     'convert_template',
     'Converts the govuk_template to use mustache inheritance',
@@ -103,13 +103,17 @@ module.exports = function(grunt){
     }
   );
 
-  grunt.registerTask('default', [
+  grunt.registerTask('generate-assets', [
     'copy:govuk_template',
     'copy:govuk_frontend_toolkit',
     'convert_template',
     'copy:govuk_frontend_toolkit',
     'replace',
-    'sass',
+    'sass'
+  ]);
+
+  grunt.registerTask('default', [
+    'generate-assets',
     'concurrent:target'
   ]);
 };
